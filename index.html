@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trung Hai</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f8ff; /* Màu nền sáng */
+        }
+        header, footer {
+            background-color: #add8e6; /* Màu xanh lam nhạt */
+            padding: 20px;
+            text-align: center;
+        }
+        #rafael-nadal {
+            padding: 20px;
+            text-align: center;
+        }
+        #rafael-nadal img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+        #game-container {
+            background-color: #e0f7fa; /* Màu nền nhạt cho khu vực trò chơi */
+            padding: 20px;
+            border: 1px solid #00796b; /* Đường viền xung quanh khu vực trò chơi */
+            margin: 20px auto; /* Căn giữa khu vực trò chơi */
+            width: 80%; /* Chiều rộng của khu vực trò chơi */
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            display: none; /* Ẩn trò chơi ban đầu */
+        }
+        #game {
+            text-align: center;
+        }
+        #word-display {
+            font-size: 2em;
+            margin: 20px;
+        }
+        .show-game {
+            display: block; /* Hiển thị trò chơi */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Trung Hai</h1>
+        <p>Trân béo</p>
+    </header>
+    
+    <section id="rafael-nadal">
+        <h2>Rafael Nadal</h2>
+        <img src="https://example.com/rafael-nadal.jpg" alt="Rafael Nadal">
+        <p><strong>Rafael Nadal</strong> là một tay vợt tennis chuyên nghiệp người Tây Ban Nha, sinh ngày 3 tháng 6 năm 1986 tại Manacor, Mallorca, Tây Ban Nha. Anh được biết đến với biệt danh "Vị vua của mặt sân đất nện" vì những thành tích ấn tượng của mình trên mặt sân này.</p>
+        <p>Nadal đã giành được 22 danh hiệu Grand Slam đơn, trong đó có 14 chức vô địch Roland Garros, và là tay vợt đầu tiên đạt được thành tích này. Anh cũng đã giành được huy chương vàng Olympic và nhiều danh hiệu ATP khác trong sự nghiệp của mình.</p>
+        <p>Rafael Nadal nổi bật không chỉ vì khả năng thi đấu xuất sắc mà còn vì tinh thần chiến đấu và sự khiêm tốn của anh. Anh là một trong những tay vợt vĩ đại nhất trong lịch sử quần vợt.</p>
+    </section>
+    
+    <footer>
+        <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">Rick Roll</a>
+    </footer>
+
+    <div id="game-container">
+        <h1>Trò Chơi Đoán Chữ</h1>
+        <div id="game">
+            <p id="word-display"></p>
+            <p>Nhập một chữ cái:</p>
+            <input type="text" id="guess-input" maxlength="1">
+            <button onclick="makeGuess()">Đoán</button>
+            <p id="message"></p>
+            <p>Chữ cái đã đoán: <span id="guessed-letters"></span></p>
+        </div>
+    </div>
+
+    <script>
+        // Danh sách từ cho trò chơi
+        const words = ["nadal", "djokovic", "trung hai", "thuy", "shit", "beo nhu lon"];
+        let chosenWord = words[Math.floor(Math.random() * words.length)];
+        let guessedLetters = [];
+        let wordDisplay = document.getElementById('word-display');
+        let message = document.getElementById('message');
+        let guessedLettersDisplay = document.getElementById('guessed-letters');
+        let gameContainer = document.getElementById('game-container');
+
+        // Cập nhật hiển thị từ theo các chữ cái đã đoán
+        function updateWordDisplay() {
+            wordDisplay.innerHTML = chosenWord.split('').map(letter => 
+                guessedLetters.includes(letter) || letter === ' ' ? letter : '_'
+            ).join(' ');
+        }
+
+        // Xử lý khi người dùng đoán chữ
+        function makeGuess() {
+            let guessInput = document.getElementById('guess-input');
+            let guess = guessInput.value.toLowerCase();
+            guessInput.value = '';
+
+            if (guess && !guessedLetters.includes(guess)) {
+                guessedLetters.push(guess);
+                updateWordDisplay();
+                guessedLettersDisplay.innerHTML = guessedLetters.join(', ');
+
+                if (chosenWord.includes(guess)) {
+                    if (!wordDisplay.innerHTML.includes('_')) {
+                        message.innerHTML = 'Chúc mừng! Bạn đã đoán đúng từ.';
+                    }
+                } else {
+                    message.innerHTML = 'Chữ cái không có trong từ. Thử lại!';
+                }
+            }
+        }
+
+        // Hiển thị trò chơi khi người dùng cuộn đến gần cuối trang
+        function showGame() {
+            let scrollHeight = document.documentElement.scrollHeight;
+            let clientHeight = document.documentElement.clientHeight;
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (scrollTop + clientHeight >= scrollHeight - 50) { // 50px để kích hoạt sớm
+                gameContainer.classList.add('show-game');
+            }
+        }
+
+        // Lắng nghe sự kiện cuộn
+        window.addEventListener('scroll', showGame);
+
+        // Cập nhật hiển thị từ khi trang tải
+        updateWordDisplay();
+    </script>
+</body>
+</html>
